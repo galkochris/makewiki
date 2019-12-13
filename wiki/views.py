@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from wiki.models import Page
+
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 
@@ -10,17 +11,18 @@ class PageList(ListView):
       1. On GET, display a homepage that shows all Pages in your wiki.
       2. Replace this CHALLENGE text with a descriptive docstring for PageList.
       3. Replace pass below with the code to render a template named `list.html`.
+
+      Page list finds all pages in the wiki and displays them.
     """
     model = Page
+    template_name = 'wiki/list.html'
 
-    def get(self, request):
-        """ Returns a list of wiki pages. """
-        
-        pass
 
 
 class PageDetailView(DetailView):
     """
+    Page Detail View displays all the information for one specific wiki page at a time.
+
     CHALLENGES:
       1. On GET, render a template named `page.html`.
       2. Replace this docstring with a description of what thos accomplishes.
@@ -40,7 +42,8 @@ class PageDetailView(DetailView):
 
     def get(self, request, slug):
         """ Returns a specific of wiki page by slug. """
-        pass
+        page = get_object_or_404(Page, slug=slug)
+        return render(request, 'wiki/page.html', context={'page': page})
 
     def post(self, request, slug):
         pass
